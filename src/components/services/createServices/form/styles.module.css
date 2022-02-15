@@ -1,0 +1,81 @@
+
+
+.column1{
+    float: left;
+    width: 65%;
+    margin-right: 24px;
+}
+.title{
+    margin-bottom: 24px;
+}
+.title input{
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 4px;
+}
+.description label{
+    background: black;
+    color: white;
+    padding: 8px 24px;
+    
+}
+.column2{
+    float: left;
+    width: 32%;
+    padding: 0px;
+    background: transparent;
+}
+@media (max-width: 1008px) {
+    .column1, .column2{
+        width: 100%;
+    }
+}
+.column2 .category{
+    margin-bottom: 24px;
+}
+
+.category select{
+    width: 100%;
+    border: none;
+    padding: 15px 24px;
+    border-radius: 4px;
+}
+.imageAlt{
+    margin-bottom: 15px;
+}
+.imageAlt input{
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 4px;
+    background: #F8F7F7;
+}
+
+.column2 .seoSettings{
+    background: var(--white);
+    padding: 24px;
+    margin-bottom: 12px;
+}
+.seoSettings label{
+    margin-bottom: 30px;
+}
+.seoSettings input, .seoSettings textarea{
+    width: 100%;
+    border-radius: 4px;
+    padding: 16px 24px;
+    background: rgba(231, 235, 239, 0.6);
+}
+.seoSettings textarea{
+    height: 133px;
+}
+.seoSettings .title{
+    margin-bottom: 15px;
+
+}
+.seoSettings .slug{
+    margin-bottom: 16px;
+    
+}
+.seoSettings .metaDescription{
+    background: rgba(231, 235, 239, 0.6);
+}
+

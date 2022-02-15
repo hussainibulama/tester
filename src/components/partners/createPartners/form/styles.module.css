@@ -1,0 +1,54 @@
+.column1 {
+  float: left;
+  width: 65%;
+  margin-right: 24px;
+
+  @media (max-width: 1008px) {
+    width: 100%;
+  }
+}
+.name {
+  margin-bottom: 24px;
+}
+.name input {
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 4px;
+}
+
+.description label {
+  background: black;
+  color: white;
+  padding: 8px 24px;
+}
+.column2 {
+  float: left;
+  width: 32%;
+  padding: 0px;
+  background: transparent;
+}
+@media (max-width: 1008px) {
+  .column1,
+  .column2 {
+    width: 100%;
+  }
+}
+.column2 .category {
+  margin-bottom: 24px;
+}
+
+.category select {
+  width: 100%;
+  border: none;
+  padding: 15px 24px;
+  border-radius: 4px;
+}
+.imageAlt {
+  margin-bottom: 15px;
+}
+.imageAlt input {
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 4px;
+  background: #f8f7f7;
+}

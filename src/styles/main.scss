@@ -1,0 +1,10 @@
+@import "./variables";
+@import "../../node_modules/hamburgers/dist/hamburgers";
+@import "../../node_modules/react-quill/dist/quill.snow.css";
+@import "../../node_modules/react-quill/dist/quill.bubble.css";
+@import "../../node_modules/react-quill/dist/quill.core.css";
+@import './config';
+
+.ck-content {
+  height: 347px !important;
+}

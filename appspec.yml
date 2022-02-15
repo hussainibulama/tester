@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/admin-frontend
+    overwrite: true
+hooks:
+  BeforeInstall:
+    - location: scripts/install-app.sh
+      runas: root
+  AfterInstall:
+    - location: scripts/after-app.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/start-app.sh
+      timeout: 300
+      runas: root

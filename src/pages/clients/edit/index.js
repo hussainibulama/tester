@@ -1,0 +1,1 @@
+export { default as EditClientsPage } from '../../../components/clients/edit'

@@ -1,0 +1,116 @@
+.section_header {
+    display: flex;
+    margin-bottom: 48px;
+}
+
+.section_header h2 {
+    margin-right:24px;
+}
+.section_body {
+    width: 100%;
+    background: var(--white);
+}
+
+.section_body .row {
+    width: 100%;
+    padding-top: 89px;
+    height: fit-content;
+    justify-content: center;
+    height: 764px;
+}
+
+.row .column1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 90px;
+}
+        
+.section_body .profile_pic {
+    display: block;
+}
+
+.section_body .file_upload {
+    display: none;
+}
+.section_body .circle {
+    border-radius: 1000px !important;
+    overflow: hidden;
+    width: 138px;
+    height: 138px;
+    margin-right: 27px;
+}
+.section_body img {
+    max-width: 100%;
+    height: auto;
+}
+.section_body .p_image {
+    position: absolute;
+    color: #666666;
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    padding: 10px;
+    border-radius: 1000px;
+    margin-top: 90px;
+    margin-left: -200px;
+    background-color: var(--white);
+}
+.section_body .p_image:hover {
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.section_body .upload_button {
+    font-size: 1.2em;
+}
+
+.section_body .upload_button:hover {
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    color: #999;
+}
+.section_body .full_info_name {
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 38px;
+    letter-spacing: -0.02em;
+    display: block;
+}
+.section_body .full_info_email {
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 34px;
+    letter-spacing: -0.02em;
+    color: #999999;
+}
+
+.row .column2{
+    justify-content: center;
+    padding: 0px 190px;
+}
+.column2 label {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+.column2 .line1, .column2 .line2{
+    display: flex;
+    justify-content: center;
+}
+.column2 .line2{
+    margin-bottom: 24px;
+}
+.column2 .first_name{
+    margin-bottom: 24px;
+    width: 100%;
+}
+.column2 .first_name input{
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 4px;
+    background-color: #F9F9F9;
+    border: 1px solid #E1E3E7;
+}
+.save_button{
+    background-color: #1D1B1B;
+    width:  100%;
+    color: var(--white);
+    padding: 16px;
+}

@@ -1,0 +1,55 @@
+.delete-dialog {
+  width: 100%;
+
+  &__header {
+    text-align: center;
+
+    h4 {
+      font-size: 20px;
+    }
+  }
+
+  &__actions {
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+
+    > button {
+      padding: 7px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      border-radius: 4px;
+
+      &.delete-btn {
+        background-color: rgb(240, 82, 82);
+        color: #fff;
+        margin-right: 10px;
+      }
+
+      &.cancel-btn {
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+.custom-table-delete {
+  margin-top: 32px;
+
+  button {
+    background: rgb(240, 82, 82);
+    padding: 7px 20px;
+    font-size: 16px;
+    font-family: inherit;
+    border-radius: 4px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}

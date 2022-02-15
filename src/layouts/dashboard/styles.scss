@@ -1,0 +1,71 @@
+.dashboard-layout {
+    width: var(--full);
+    height: var(--full);
+    display: grid;
+    color: var(--grey);
+  
+    @media (max-width: 1272px) {
+      display: block;
+    }
+  
+    .hamburger_wrapper {
+      background: var(--white);
+      width: var(--full);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 220;
+      box-shadow: var(--box-shadow);
+    
+      @media (min-width: 1272px) {
+        display: none;
+      }
+    }
+    
+    .backdrop {
+      position: fixed;
+      visibility: hidden;
+      pointer-events: none;
+      opacity: 0;
+      width: var(--full);
+      height: var(--full);
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 5;
+      top: 55px;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      transition: all 0.4s ease-in-out;
+    
+      &._show {
+        visibility: visible;
+        pointer-events: all;
+        opacity: 1;
+      }
+    
+      @media (min-width: 1272px) {
+        display: none;
+      }
+    }
+    .main {
+      position: relative;
+      left: var(--page-sidebar-width);
+      width: calc(100% - var(--page-sidebar-width));
+      display: block;
+      padding: 0px 56px 69px 56px;
+  
+      @media (max-width: 1312px) {
+        left: 0;
+        width: var(--full);
+      }
+    }
+    a:hover {
+      color: var(--black);
+      font-weight: 500;
+    }
+    
+  
+  }

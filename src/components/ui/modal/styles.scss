@@ -1,0 +1,16 @@
+.modal-body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 700px;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 4px;
+  min-height: 100px;
+
+  &.sm {
+    max-width: 400px;
+  }
+}

@@ -1,0 +1,16 @@
+.section{
+    &_header{
+        display: flex;
+        margin-bottom: 48px;
+
+        >h2{
+            margin-right:24px;
+        }
+        &_button{
+            background: black;
+            color: white;
+            padding: 10px 44px;
+            border-radius: 3px;
+        }
+    }
+}
