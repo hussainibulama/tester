@@ -25,13 +25,11 @@ import { CreateClientsPage } from "./pages/clients/createClients";
 import { CreatePartnersPage } from "./pages/partners/createPartners";
 import { CareersPage } from "./pages/careers";
 import { CreateCareersPage } from "./pages/careers/createCareers";
-import { SelectTemplatePage } from "./pages/pages/templates";
 import { CreateInsightsPage } from "./pages/insights/createInsights";
 import { CreateServicesPage } from "./pages/services/createInsights";
 import { CreateCaseStudyPage } from "./pages/case_studies/createCaseStudy";
 import { RolesPage } from "./pages/roles";
 import { MenuPage } from "./pages/menu";
-import { CreatePage } from "./pages/pages/createPage";
 import { EditCaseStudyPage } from "./pages/case_studies/edit";
 import { EditClientsPage } from "./pages/clients/edit";
 
@@ -80,11 +78,7 @@ function App() {
           component={PagesPage}
           layout={DashboardLayout}
         />
-        <AppRoute
-          path="/Pages/Select-Template"
-          component={SelectTemplatePage}
-          layout={DashboardLayout}
-        />
+    
         <AppRoute
           path="/Profile"
           component={ProfilePage}
@@ -138,11 +132,7 @@ function App() {
           component={InsightsPage}
           layout={DashboardLayout}
         />
-        <AppRoute
-          path="/Pages/:template/Create-Page"
-          component={CreatePage}
-          layout={DashboardLayout}
-        />
+   
         <AppRoute
           path="/Clients/Create-Client"
           component={CreateClientsPage}
