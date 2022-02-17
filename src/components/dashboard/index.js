@@ -1,5 +1,5 @@
 import "./styles.scss";
-import React,{useEffect} from "react";
+import React,{useEffect, useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -160,33 +160,7 @@ const state = {
  
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  useEffect(() => {
-    (async () => {
-      let res = await instance.get("/auth/v2/admin/user/get-total?platform=web");
-      let result = await res.data;
-      // if(result){
-      //   let ar = [];
-      //   let counter = 1;
-      //   result.message.allCareers.forEach((item,index)=>{
-      //     let q= {
-      //       id: counter,
-      //       title: item.title,
-      //       status: item.status===1?"Active":"Draft",
-      //       publishedDate: item.createdAt,
-      //       location: item.city + " "+ item.country,
-      //       type: item.type,
-      //     }
-      //     counter++;
-      //     ar.push(q);
-      //   })
-      //   setItems(ar);
-      // }
-      
-      if (result.statusCode === 200) {
-        console.log("a");
-      }
-    })();
-  },[]);
+ 
   return (
     <div
       role="tabpanel"
@@ -219,7 +193,7 @@ function a11yProps(index) {
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: "100%",
 
     '& .MuiTableCell-head': {
         color: '#ffffff',
@@ -284,7 +258,64 @@ const DashboardPage = () => {
     const navClasses = useNavStyles();
     const [value, setValue] = React.useState(0);
     const [anchorCardEl, setAnchorCardEl] = React.useState(null);
+    const [Tusers, setTusers] = useState(10);
+    const [RedemptionLog, setRedemptionLog] = useState([]);
+    const [totalad, settotalad] = useState({
+      "totalAdverts":10,
+      "totalActiveAdverts":10,
+      "totalInactiveAdverts":10,
+    });
+    const [totalcount, settotalcount] = useState({
+      "click":10,
+      "impression":10,
+      "video":10,
+    });
+    const [verified, setverified] = useState(10);
+    const [unverified, setunverified] = useState(10);
 
+    async function TotalUsers(){
+      let res = await instance.get("/auth/v2/admin/total-users?platform=web");
+      let result = await res.data;
+      setTusers(result.data.total_users);
+    }
+    async function RedemptionLoger(){
+      const res = await instance.get(`/auth/v2/admin/redemption-logs?limit=10&platform=web`);
+      let result = await res.data.data.users;
+      setRedemptionLog(result);
+      
+    }
+    async function totalads(){
+      const res = await instance.get(`/advert/v2/admin/get-total-ads?platform=web`);
+      let result = await res.data.data;
+      settotalad(result);
+      
+    }
+    async function totalcounts(){
+      const res = await instance.get(`/advert/v2/admin/get-total-counts?platform=web`);
+      let result = await res.data.data;
+      settotalcount(result);
+      
+    }
+    async function verifiedu(){
+      const res = await instance.get(`/auth/v2/admin/verified-users?platform=android`);
+      let result = await res.data.data.pagination.totalCount;
+      setverified(result);
+      
+    }
+    async function unverifiedu(){
+      const res = await instance.get(`/auth/v2/admin/unverified-users?platform=android`);
+      let result = await res.data.data.pagination.totalCount;
+      setunverified(result);
+      
+    }
+    useEffect(() => {
+      TotalUsers();
+      RedemptionLoger();
+      totalads();
+      totalcounts();
+      verifiedu();
+      unverifiedu();
+    },[]);
     const handleCardButtonClick = (event) => {
         setAnchorCardEl(event.currentTarget);
     };
@@ -314,12 +345,12 @@ const DashboardPage = () => {
                         <div className="details">
                             <p className="title1">Users Overview</p>
                             <p className="content1">Total Overview of users </p>
-                            <p className="title2">28756</p>
+                            <p className="title2">{Tusers.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                             <p className="content1">Total Users</p>
-                            <p className="title3">12987</p>
-                            <p className="content1">Active User</p>
-                            <p className="title4">1456</p>
-                            <p className="content1">Inactive User</p>
+                            <p className="title3">{verified.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+                            <p className="content1">Verified Users</p>
+                            <p className="title4">{unverified.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+                            <p className="content1">Unverified Users</p>
                             <p className="title4">1456</p>
                             <p className="content1">Blocked User</p>
  
@@ -383,34 +414,37 @@ const DashboardPage = () => {
                 <div className="column1__card1">
                     <div className="column1__card1__section1">
                         <span>Total Impression</span>
-                        <h1>120,000,000</h1>
+                        <h1>{totalcount.impression.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h1>
                     </div><p className="strong">|</p>
                     <div className="column1__card1__section2">
                         <span>Total Videos</span>
-                        <h1>986,000</h1>
+                        <h1>{totalcount.video.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h1>
                     </div><p className="strong">|</p>
                     <div className="column1__card1__section3">
                         <span>Total Clicks</span>
-                        <h1>986,000</h1>
+                        <h1>{totalcount.click.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h1>
                     </div>
                 </div>
                 <div className="column1__card1">
                     <div className="column1__card1__section1">
                         <span>Total Adverts</span>
-                        <h1>120,000,000</h1>
+                        <h1>{totalad.totalAdverts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h1>
                     </div><p className="strong">|</p>
                     <div className="column1__card1__section2">
                         <span>Total Active Adverts</span>
-                        <h1>986,000</h1>
+                        <h1>{totalad.totalActiveAdverts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h1>
                     </div>
                     <p className="strong">|</p>
                     <div className="column1__card1__section2">
                         <span>Total Inactive Adverts</span>
-                        <h1>986,000</h1>
+                        <h1>{totalad.totalInactiveAdverts.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h1>
                     </div>
                 </div>
               
-                <div className="column1__card2">
+            </div>
+            <div className="column2">
+
+            <div className="column1__card2">
                     <div className="column1__card2__heading_text">
                         <h3>Recent User Redemption records</h3>
                     </div>
@@ -420,19 +454,17 @@ const DashboardPage = () => {
                                 <TableRow>
                                     <TableCell>Phone Number</TableCell>
                                     <TableCell align="left">Amount</TableCell>
-                                    <TableCell align="left">Service type</TableCell>
-                                    <TableCell align="left">Location&nbsp;(g)</TableCell>
+                                    
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                            {rows.map((row, index) => (
+                            {RedemptionLog.map((row, index) => (
                                 <TableRow key={index}>
                                 <TableCell component="th" scope="row">
-                                    {row.browser}
+                                    {row.destination}
                                 </TableCell>
-                                <TableCell align="left">{row.date}</TableCell>
-                                <TableCell align="left">{row.ip}</TableCell>
-                                <TableCell align="left">{row.location}</TableCell>
+                                <TableCell align="left">{row.amount}</TableCell>
+   
                                 </TableRow>
                             ))}
                             </TableBody>
@@ -440,31 +472,7 @@ const DashboardPage = () => {
                     </TableContainer>
 
                 </div>
-            </div>
-            <div className="column2">
-                <div className={navClasses.root}>
-                    <AppBar position="static">
-                        <Tabs value={value} onChange={handleTabChange} aria-label="Tab">
-                            <Tab label="Transactions" {...a11yProps(0)} style={{minWidth: '83px'}}/>
-                            <Tab label="Fail" {...a11yProps(1)}  style={{minWidth: '83px'}}/>
-                            <Tab label="Success" {...a11yProps(2)}  style={{minWidth: '83px'}}/>
-                        </Tabs>
-                    </AppBar>
-                    <TabPanel value={value} index={0}>
-                        <Paper style={{marginBottom: '2px'}}>
-                     
-                        </Paper>
-                        <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <Button size="small">See All</Button>
-                        </div>
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                        empty...
-                    </TabPanel>
-                    <TabPanel value={value} index={2}>
-                        empty...
-                    </TabPanel>
-                </div>
+               
             </div>
             
         </div>

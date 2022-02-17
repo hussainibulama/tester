@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from "react";
 import Form from "./form";
 import styles from "./styles.module.css";
@@ -5,22 +6,20 @@ import { toast } from "react-toastify";
 import axios from "../../../utils/axios";
 import Loader from "../../ui/loader";
 import { useHistory } from "react-router";
-import { useParams } from 'react-router-dom';
 import instance from "../../../utils/axios";
 
 const defaults = {
-  title: "",
-  seoTitle: "",
-  altText: "",
-  slug: "",
-  metaDesc: "",
+  subject: "",
+  question: "",
+  asked_by: "",
+  added_by: "",
+
 };
 
-const CreateCaseStudy = () => {
+const CreateFaq = () => {
   const history = useHistory();
-  const params = useParams();
   const [publish, setPublish] = useState(false);
-  const [description, setDescription] = useState("");
+  const [body, setBody] = useState("");
   const [image, setImage] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState({
@@ -48,27 +47,20 @@ const CreateCaseStudy = () => {
     });
     setImage([]);
     setSelected(null);
-    setDescription(null);
+    setBody(null);
   };
 
-  async function createCaseStudy(data, publish) {
+  async function FAQ(data, publish) {
     setLoading(true);
-
     if (publish) {
       setPublish(true);
     } else {
       setPublish(false);
     }
 
-    if (image.length === 0) {
-      setLoading(false);
-      return toast.error("Please upload an image!");
-    }
-
     const formData = new FormData();
 
     formData.append("file", image[0]);
-
     try {
       const res = await axios({
         method: "POST",
@@ -78,20 +70,20 @@ const CreateCaseStudy = () => {
       });
 
       axios
-        .post("/case-study", {
+        .post("/insights", {
           ...data,
           galleryId: res.data.message.id,
         })
         .then(() => {
-          toast.success("Case Study Added Successfully!");
+          toast.success("Insight Published Successfully!");
           resetFields();
-          history.push("/CaseStudy");
+          history.push("/Insights");
         })
         .catch((error) => {
           if (error.response.data.message) {
             toast.error(error.response.data.message[0]);
           } else {
-            toast.error("This Case Study Exists!");
+            toast.error("This Insight Exists!");
           }
         });
     } catch (err) {
@@ -100,83 +92,71 @@ const CreateCaseStudy = () => {
       setLoading(false);
     }
   }
-  async function approve() {
-    
+  async function addFaq() {
+    setLoading(true);
     try {
-      let res = await instance.put(
-        '/advert/v2/admin/approve-ad/' + params.id + '?platform=web',
-      );
-
+      const res = await instance.post(`/auth/v2/admin/add-faq?platform=web`,[{
+        subject: fields.subject,
+        question: fields.question,
+        answer: body.replaceAll("<p>","").replaceAll("</p>",""),
+        asked_by: fields.asked_by,
+        added_by: fields.asked_by,
+      }]);
       let result = await res.data;
-      if (result && result.status === 'success') {
-        toast.success("Approve/DiApproved successfully");
-      }else if (result && result.status === 'error') {
+      if(result.status==="success"){
+           toast.success("Faq Published Successfully!");
+          history.push("/Faq");
+      }else{
         toast.error(result.message);
-      }
-    } catch (e) {
-      console.log(e);
-      toast.error(e.message);
+      } 
+    } catch (err) {
+      console.log(err);
+      toast.error(err);
+    } finally {
+      setLoading(false);
     }
-  
-}
+  }
   const onSubmit = (publish) => {
-    createCaseStudy(
+    CreateFaq(
       {
-        title: fields.title,
-        //   seoTItle: fields.seoTitle,
-        //   altText: fields.altText,
-        body: description,
-        //   slug: fields.slug,
-        //   metaDesc: fields.metaDesc,
-        // galleryId: 1,
-        publishedStatus: publish ? 1 : 0,
-        tags: selected.selectedOptions
-          ? selected.selectedOptions.map((x) => {
-              return x.value;
-            })
-          : [],
-        //   adminId: JSON.parse(localStorage.getItem("userDetails")).uid, // tell chisom
-        adminId: 1,
+        subject: fields.subject,
+        question: fields.question,
+        answer: body,
+        asked_by: fields.asked_by,
+        added_by: fields.added_by,
       },
       publish
     );
   };
-
   return (
     <div className={styles.section}>
       <div className={styles.section_header}>
-        <h2>View Advert Details</h2>
+        <h2>Create FAQ</h2>
         <div className={styles.section_header_buttons}>
-          {/* <button
-            className={styles.section_header_button_draft}
-            onClick={() => onSubmit()}
-          >
-            {loading && !publish && <Loader />}
-            Delete
-          </button> */}
+       
           <button
             className={styles.section_header_button_publish}
-            onClick={() => approve()}
+            onClick={() => addFaq()}
           >
             {loading && publish && <Loader />}
-            Approve
+            Save
           </button>
         </div>
       </div>
       <div className={styles.section_body}>
-        <Form
+        <Form 
+          body={body}
+          setBody={setBody}
           image={image}
           setImage={setImage}
           handleInput={handleInputChange}
           fields={fields}
           selectHandler={selectHandler}
           selectedOption={selected ? selected.selectedOptions : null}
-          description={description}
-          setDescription={setDescription}
         />
       </div>
     </div>
   );
 };
 
-export default CreateCaseStudy;
+export default CreateFaq;

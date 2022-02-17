@@ -6,11 +6,9 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./store/actions";
 import axios from "./utils/axios";
 import { toast } from "react-toastify";
-
 // layouts
 import AuthLayout from "./layouts/auth";
 import DashboardLayout from "./layouts/dashboard";
-
 // pages
 import { LoginPage } from "./pages/login";
 import { DashboardPage } from "./pages/dashboard";
@@ -24,11 +22,18 @@ import { ClientsPage } from "./pages/clients";
 import { CreateClientsPage } from "./pages/clients/createClients";
 import { CreatePartnersPage } from "./pages/partners/createPartners";
 import { CareersPage } from "./pages/careers";
+import { Transactions } from "./pages/transactions";
+import { Redemption } from "./pages/redemption";
+import { Faq } from "./pages/faq";
+import { CreateFaq } from "./pages/faq/faq";
+import { Settings } from "./pages/settings";
+import { CreateSettings} from "./pages/settings/settings";
 import { CreateCareersPage } from "./pages/careers/createCareers";
 import { CreateInsightsPage } from "./pages/insights/createInsights";
 import { CreateServicesPage } from "./pages/services/createInsights";
 import { CreateCaseStudyPage } from "./pages/case_studies/createCaseStudy";
-import { RolesPage } from "./pages/roles";
+import { Users } from "./pages/users";
+import { CreateUsers } from "./pages/users/users";
 import { MenuPage } from "./pages/menu";
 import { EditCaseStudyPage } from "./pages/case_studies/edit";
 import { EditClientsPage } from "./pages/clients/edit";
@@ -78,7 +83,38 @@ function App() {
           component={PagesPage}
           layout={DashboardLayout}
         />
-    
+         <AppRoute
+          path="/Transactions"
+          exact
+          component={Transactions}
+          layout={DashboardLayout}
+        />
+             <AppRoute
+          path="/Faq"
+          exact
+          component={Faq}
+          layout={DashboardLayout}
+        />
+            <AppRoute
+          path="/Settings"
+          exact
+          component={Settings}
+          layout={DashboardLayout}
+        />
+           <AppRoute
+          path="/Settings/Create"
+          exact
+          component={CreateSettings}
+          layout={DashboardLayout}
+        />
+        
+        
+     <AppRoute
+          path="/Redemption"
+          exact
+          component={Redemption}
+          layout={DashboardLayout}
+        />
         <AppRoute
           path="/Profile"
           component={ProfilePage}
@@ -88,6 +124,12 @@ function App() {
           path="/Services"
           exact
           component={ServicesPage}
+          layout={DashboardLayout}
+        />
+         <AppRoute
+          path="/Create/Faq"
+          exact
+          component={CreateFaq}
           layout={DashboardLayout}
         />
         <AppRoute
@@ -115,9 +157,15 @@ function App() {
           layout={DashboardLayout}
         />
         <AppRoute
-          path="/Roles"
+          path="/Users"
           exact
-          component={RolesPage}
+          component={Users}
+          layout={DashboardLayout}
+        />
+        <AppRoute
+          path="/Users/View/:id"
+          exact
+          component={CreateUsers}
           layout={DashboardLayout}
         />
         <AppRoute

@@ -39,7 +39,7 @@ const Nav = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/Roles">
+          <NavLink to="/Users">
             <RoleManagement />
             <span>Users</span>
           </NavLink>
@@ -58,13 +58,7 @@ const Nav = () => {
           </NavLink>
         </li>
 
-        <li>
-          <NavLink to="#">
-            <Services />
-            <span>Advertisers</span>
-          </NavLink>
-        </li>
-
+   
         <li>
           <NavLink to="/CaseStudy">
             <CaseStudies />
@@ -73,34 +67,38 @@ const Nav = () => {
         </li>
 
         <li>
-          <NavLink to="#">
+          <NavLink to="/Transactions">
             <Clients />
             <span>Transaction</span>
           </NavLink>
         </li>
 
         <li>
-          <NavLink to="#">
+          <NavLink to="/Redemption">
             <Partners />
-            <span>Referrals</span>
+            <span>Redemption</span>
           </NavLink>
         </li>
 
-      
-
         <li>
-
-        <li>
-          <NavLink to="#">
+          <NavLink to="/Faq">
             <Careers />
-            <span>Notification</span>
+            <span>FAQ</span>
           </NavLink>
         </li>
+        <li>
           <NavLink to="#">
-            <RoleManagement />
-            <span>Reviews</span>
+            <Services />
+            <span>User Map</span>
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/Settings">
+            <RoleManagement />
+            <span>Settings</span>
+          </NavLink>
+        </li>
+
       </ul>
       <div className="nav__footer">
         <span

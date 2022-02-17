@@ -37,13 +37,19 @@ const useStyles = makeStyles({
 });
 
 const Form = ({
-
+  image,
+  setImage,
+  fields,
+  handleInput,
+  selectHandler,
+  selectedOption,
+  descriptions,
+  setDescriptions,
 }) => {
   const classes = useStyles();
   const params = useParams();
   const [impression, setImpression] = useState(0);
   const [click, setClick] = useState(0);
-  const [video, setVideo] = useState(0);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [feedtype, setfeedtype] = useState('');
@@ -66,7 +72,6 @@ const Form = ({
         if (result && result.status === 'success') {
           setAllData(result.data.data);
           setClick(result.data.clicks);
-          setVideo(result.data.video);
           setImpression(result.data.impression);
           setThumbnail(result.data.data.thumbnail);
           setName(result.data.data.name);
@@ -96,20 +101,6 @@ const Form = ({
     <div>
       <form>
         <div className={styles.column1}>
-        <div className={styles.description}>
-            <label htmlFor="ReactQuill">Report</label>
-            <div className={styles.inline_text}>
-            <h4>Impression:</h4><p>{impression?impression:0}</p>
-            </div>
-            <div className={styles.inline_text}>
-            <h4>Click:</h4><p>{click?click:0}</p>
-            </div>
-            <div className={styles.inline_text}>
-            <h4>Videos:</h4><p>{video?video:0}</p>
-            </div>
-           
-           
-          </div>
        
           <div className={styles.description}>
             <label htmlFor="ReactQuill">Description</label>

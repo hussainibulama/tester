@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
@@ -9,7 +8,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import CustomModal from "../../ui/modal";
 import CustomTableFooter from "../../ui/tableFooter";
-import CustomTableFooters from "../../ui/tableFooter/prev";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -36,8 +34,11 @@ const useStyles = makeStyles({
     "& .super-app.indraft": {
       color: "#1D1B1B8C",
     },
-    "& .super-app.published": {
+    "& .super-app.active": {
       color: "#029D2E",
+    },
+    "& .super-app.archived": {
+      color: "#F90E0E",
     },
     "& .MuiDataGrid-columnSeparator": {
       display: "none",
@@ -45,27 +46,27 @@ const useStyles = makeStyles({
   },
 });
 
-const CaseStudyTable = ({
+const CareersTable = ({
   loading,
   rows,
   setIndexes,
   deleteItems,
   indexes,
   clearIndexes,
-  toggleStatus,
+  openEditModal,
   setSelectionModel,
   selectionModel,
-  bulkapprove,
-  bulkdisapprove,
-  bulkdelete
+  block,
+  unblock,
+  deletes
 }) => {
   const [pageSize, setPageSize] = useState(5);
   const classes = useStyles();
   const [showModal, setShowModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const history = useHistory();
   const [disableBtn, setDisableBtn] = useState(false);
+  const history = useHistory();
 
   const closeModal = () => {
     setShowModal(false);
@@ -84,36 +85,71 @@ const CaseStudyTable = ({
 
   const columns = [
     {
-      field: "advertiser",
-      headerName: "Advertiser",
-      width: 350,
-      editable: true,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "adsid",
-      headerName: "Ads Id",
+      field: "username",
+      headerName: "Username",
       width: 150,
-      editable: true,
       headerClassName: "super-app-theme--header",
     },
     {
-      field: "publishedDate",
-      headerName: "Published Date",
-      width: 310,
-      type: "date",
+      field: "type",
+      headerName: "User Type",
+      width: 150,
       headerClassName: "super-app-theme--header",
     },
+
+    {
+      field: "phone",
+      headerName: "Phone Number",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "coins",
+      headerName: "User Coins",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+    },
+    {
+      field: "verify",
+      headerName: "Contact Ver. Status",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+      cellClassName: (params) =>
+      clsx("super-app", {
+        indraft: params.value === "False",
+        active: params.value === "True",
+        // archived: params.value === "Archived",
+      }),
+    },
+    {
+      field: "board",
+      headerName: "User Unboard Status",
+      width: 150,
+      headerClassName: "super-app-theme--header",
+      cellClassName: (params) =>
+      clsx("super-app", {
+        indraft: params.value === "False",
+        active: params.value === "True",
+        // archived: params.value === "Archived",
+      }),
+    },
+
     {
       field: "status",
       headerName: "Status",
       width: 150,
-      editable: true,
       headerClassName: "super-app-theme--header",
       cellClassName: (params) =>
         clsx("super-app", {
-          indraft: params.value === "Pending",
-          published: params.value === "Active",
+          indraft: params.value === "False",
+          active: params.value === "True",
+          // archived: params.value === "Archived",
         }),
     },
     {
@@ -148,35 +184,34 @@ const CaseStudyTable = ({
             >
               <MenuItem
                 onClick={() => {
-                  history.push(`/adverts/view/${selectionModel[0]}`);
+                  history.push(`/Users/View/${rows[selectionModel[0]].email}`);
                 }}
               >
-                View
-                
+                View User Transactions
               </MenuItem>
               <MenuItem
-                onClick={() => {
-                  bulkdelete();
+                 onClick={() => {
+                  block(selectionModel[0]);
                   handleClose();
                 }}
               >
-                Delete
+                Block User
               </MenuItem>
               <MenuItem
-                onClick={() => {
-                  bulkapprove();
-                  handleClose();
-                }}
+                  onClick={() => {
+                    unblock(selectionModel[0]);
+                    handleClose();
+                  }}
               >
-              Approve
+                Un-Block User
               </MenuItem>
               <MenuItem
-                onClick={() => {
-                  bulkdisapprove();
-                  handleClose();
-                }}
+                   onClick={() => {
+                    deletes(selectionModel[0]);
+                    handleClose();
+                  }}
               >
-                Dis-Approve
+                Delete User
               </MenuItem>
             </Menu>
           </div>
@@ -197,7 +232,7 @@ const CaseStudyTable = ({
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 100]}
+          rowsPerPageOptions={[100, 200]}
           pagination
           checkboxSelection
           // disableSelectionOnClick
@@ -209,35 +244,12 @@ const CaseStudyTable = ({
         />
       </div>
 
-    
-      <div style={{position:"relative",display:"flex",justifyContent:"space-between",}}>
-        <CustomTableFooters
-          // disabled={indexes.length === 0}
-          style={{backgroundColor:"#ccc"}}
-          name={"Disapprove"}
-          clicked={() => {
-            bulkdisapprove();
-          }}
-        />      
-        <CustomTableFooters
-          style={{backgroundColor:"#000"}}
-        // disabled={indexes.length === 0}
-        name={"Approve"}
+      <CustomTableFooter
+        disabled={!disableBtn || indexes?.length === 0}
         clicked={() => {
-          bulkapprove();
-        }}
-        
-      />
-        <CustomTableFooter
-        // disabled={!disableBtn || indexes?.length === 0}
-        clicked={() => {
-          bulkdelete();
+          setShowModal(true);
         }}
       />
-        </div>
-
-      
-      
 
       <CustomModal open={showModal} close={closeModal} size="small">
         <div className="delete-dialog">
@@ -265,4 +277,4 @@ const CaseStudyTable = ({
   );
 };
 
-export default CaseStudyTable;
+export default CareersTable;

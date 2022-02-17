@@ -59,11 +59,70 @@ const CaseStudyPage = () => {
       id: x.adsId,
       advertiser: x.advertiser,
       adsid: x.adsId ,
-      publishedDate: moment(x.date).format("ll"), 
+      publishedDate: moment(x.date).format("dddd, MMMM Do YYYY, h:mm:ss a"), 
       status:x.status === "Not approved" ? "Pending" : "Active",
     };
   });
+  async function bulkapprove() {
+    try {
+      let res = await instance.put(
+        '/advert/v2/admin/bulk-approve?platform=web',{
+          ids:selectionModel,
+        }
+      );
+      let result = await res.data;
+      if (result && result.status === 'success') {
+        fetchAdverts(); 
+        toast.success("Approve/DiApproved successfully");
+      }else if (result && result.status === 'error') {
+        toast.error(result.message);
+      }
+    } catch (e) {
+      console.log(e);
+      toast.error(e.message);
+    }
+  
+}
+async function bulkdisapprove() {
+  try {
+    let res = await instance.put(
+      '/advert/v2/admin/bulk-disapprove?platform=web',{
+        ids:selectionModel,
+      }
+    );
+    let result = await res.data;
+    if (result && result.status === 'success') {
+      fetchAdverts(); 
+      toast.success("Approve/DiApproved successfully");
+    }else if (result && result.status === 'error') {
+      toast.error(result.message);
+    }
+  } catch (e) {
+    console.log(e);
+    toast.error(e.message);
+  }
 
+}
+async function bulkdelete() {
+  try {
+    let res = await instance.post(
+      '/advert/v2/admin/bulk-delete?platform=web',{
+        ids:selectionModel,
+      }
+    );
+    let result = await res.data;
+    if (result && result.status === 'success') {
+      fetchAdverts(); 
+      toast.success("Approve/DiApproved successfully");
+    }else if (result && result.status === 'error') {
+      toast.error(result.message);
+    }
+  } catch (e) {
+    console.log(e);
+    toast.error(e.message);
+  }
+
+}
   async function fetchAdverts() {
     try {
       const res = await instance.get("/advert/v2/admin/get-all-ads?platform=web");
@@ -153,6 +212,9 @@ const CaseStudyPage = () => {
             toggleStatus={togglePublishStatus}
             setSelectionModel={setSelectionModel}
             selectionModel={selectionModel}
+            bulkapprove={bulkapprove}
+            bulkdisapprove={bulkdisapprove}
+            bulkdelete={bulkdelete}
           />
         </div>
       </div>
