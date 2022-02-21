@@ -87,7 +87,7 @@ const Nav = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="#">
+          <NavLink to="/map">
             <Services />
             <span>User Map</span>
           </NavLink>

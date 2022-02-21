@@ -258,20 +258,22 @@ const DashboardPage = () => {
     const navClasses = useNavStyles();
     const [value, setValue] = React.useState(0);
     const [anchorCardEl, setAnchorCardEl] = React.useState(null);
-    const [Tusers, setTusers] = useState(10);
+    const [Tusers, setTusers] = useState(0);
+    const [block, setBlock] = useState(0);
+    const [refer, setRefer] = useState(0);
     const [RedemptionLog, setRedemptionLog] = useState([]);
     const [totalad, settotalad] = useState({
-      "totalAdverts":10,
-      "totalActiveAdverts":10,
-      "totalInactiveAdverts":10,
+      "totalAdverts":0,
+      "totalActiveAdverts":0,
+      "totalInactiveAdverts":0,
     });
     const [totalcount, settotalcount] = useState({
-      "click":10,
-      "impression":10,
-      "video":10,
+      "click":0,
+      "impression":0,
+      "video":0,
     });
-    const [verified, setverified] = useState(10);
-    const [unverified, setunverified] = useState(10);
+    const [verified, setverified] = useState(0);
+    const [unverified, setunverified] = useState(0);
 
     async function TotalUsers(){
       let res = await instance.get("/auth/v2/admin/total-users?platform=web");
@@ -297,15 +299,38 @@ const DashboardPage = () => {
       
     }
     async function verifiedu(){
-      const res = await instance.get(`/auth/v2/admin/verified-users?platform=android`);
+      const res = await instance.get(`/auth/v2/admin/verified-users?platform=web`);
       let result = await res.data.data.pagination.totalCount;
       setverified(result);
       
     }
     async function unverifiedu(){
-      const res = await instance.get(`/auth/v2/admin/unverified-users?platform=android`);
+      const res = await instance.get(`/auth/v2/admin/unverified-users?platform=web`);
       let result = await res.data.data.pagination.totalCount;
       setunverified(result);
+      
+    }
+     async function blocked(){
+      const res = await instance.get(`/auth/v2/admin/users-blocked?platform=web`);
+      let result = await res.data;
+    if(result.data?.pagination?.totalCount){
+      setBlock(result.data.pagination.totalCount);
+    }
+      
+    }
+    async function referrals(){
+      const res = await instance.get(`/auth/v2/admin/referrals?platform=web`);
+      let result = await res.data.data.pagination.totalCount;
+      setRefer(result);
+      
+    }
+    async function amountall(){
+      const res = await instance.get(`/auth/v2/admin/user/sort-by-date?platform=web`,{
+        "start_date":"09-02-2000",
+        "end_date":"10-02-2022",
+      });
+      let result = await res.data;
+      console.log(result);
       
     }
     useEffect(() => {
@@ -315,6 +340,9 @@ const DashboardPage = () => {
       totalcounts();
       verifiedu();
       unverifiedu();
+      blocked();
+      referrals();
+      amountall();
     },[]);
     const handleCardButtonClick = (event) => {
         setAnchorCardEl(event.currentTarget);
@@ -351,7 +379,7 @@ const DashboardPage = () => {
                             <p className="content1">Verified Users</p>
                             <p className="title4">{unverified.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                             <p className="content1">Unverified Users</p>
-                            <p className="title4">1456</p>
+                            <p className="title4">{block}</p>
                             <p className="content1">Blocked User</p>
  
                             
@@ -404,7 +432,7 @@ const DashboardPage = () => {
                   <img src={user} alt="" />
                 </div>{' '}
                 <div className="tags">
-                  <p>112</p>
+                  <p>{refer}</p>
                   <p>Total Referrals</p>
                 </div>
               </div>

@@ -118,6 +118,7 @@ const TransactionsTable = ({
 { 
   field: 'created_at', 
   headerName: 'Date', 
+  type: 'date',
   width: 300 ,
   editable: true,
   headerClassName: 'super-app-theme--header',

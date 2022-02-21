@@ -1,0 +1,33 @@
+.section {
+  position: relative;
+  .section_body {
+    position: relative;
+    display: flexbox !important;
+    justify-content: column !important;
+    height: 100%;
+
+    .parks {
+      position: relative;
+      height: 30em;
+    }
+    .hors {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      height: 100%;
+
+      .itemers {
+        position: relative;
+        height: 70px;
+        width: 121.5px;
+        border-radius: 0.5em;
+        margin: 1em;
+        margin-left: 0em;
+        background-color: #fff;
+        text-align: center;
+        align-content: center;
+      }
+    }
+  }
+}

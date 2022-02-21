@@ -126,6 +126,7 @@ const TransactionsTable = ({
   headerName: 'Date', 
   width: 300 ,
   editable: true,
+  type: 'date',
   headerClassName: 'super-app-theme--header',
 },
       {

@@ -11,6 +11,7 @@ import AuthLayout from "./layouts/auth";
 import DashboardLayout from "./layouts/dashboard";
 // pages
 import { LoginPage } from "./pages/login";
+import { Map } from "./pages/map";
 import { DashboardPage } from "./pages/dashboard";
 import { InsightsPage } from "./pages/insights";
 import { PagesPage } from "./pages/pages";
@@ -81,6 +82,12 @@ function App() {
           path="/Pages"
           exact
           component={PagesPage}
+          layout={DashboardLayout}
+        />
+                <AppRoute
+          path="/map"
+          exact
+          component={Map}
           layout={DashboardLayout}
         />
          <AppRoute
