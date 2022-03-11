@@ -20,6 +20,7 @@ const CreateCaseStudy = () => {
   const history = useHistory();
   const params = useParams();
   const [publish, setPublish] = useState(false);
+  const [status, setStatus] = useState(false);
   const [description, setDescription] = useState("");
   const [image, setImage] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -101,7 +102,7 @@ const CreateCaseStudy = () => {
     }
   }
   async function approve() {
-    
+    setLoading(true);
     try {
       let res = await instance.put(
         '/advert/v2/admin/approve-ad/' + params.id + '?platform=web',
@@ -110,14 +111,24 @@ const CreateCaseStudy = () => {
       let result = await res.data;
       if (result && result.status === 'success') {
         toast.success("Approve/DiApproved successfully");
+        setLoading(false);
+        history.go(0);
+
       }else if (result && result.status === 'error') {
         toast.error(result.message);
+        setLoading(false);
+
       }
     } catch (e) {
       console.log(e);
       toast.error(e.message);
+      setLoading(false);
+
     }
   
+}
+const Setter=(text)=>{
+  setStatus(text);
 }
   const onSubmit = (publish) => {
     createCaseStudy(
@@ -158,8 +169,10 @@ const CreateCaseStudy = () => {
             className={styles.section_header_button_publish}
             onClick={() => approve()}
           >
-            {loading && publish && <Loader />}
-            Approve
+            {loading && <Loader />}
+            {status ===true && <>Disapprove</>}
+            {status !==true && <>Approve</>}
+             
           </button>
         </div>
       </div>
@@ -173,6 +186,7 @@ const CreateCaseStudy = () => {
           selectedOption={selected ? selected.selectedOptions : null}
           description={description}
           setDescription={setDescription}
+          Setter={Setter}
         />
       </div>
     </div>

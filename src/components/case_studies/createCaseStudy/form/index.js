@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 });
 
 const Form = ({
-
+Setter,
 }) => {
   const classes = useStyles();
   const params = useParams();
@@ -65,6 +65,7 @@ const Form = ({
         let result = await res.data;
         if (result && result.status === 'success') {
           setAllData(result.data.data);
+          Setter(result.data.data.approval_status);
           setClick(result.data.clicks);
           setVideo(result.data.video);
           setImpression(result.data.impression);

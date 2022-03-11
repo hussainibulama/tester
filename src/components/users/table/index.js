@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import CustomModal from "../../ui/modal";
 import CustomTableFooter from "../../ui/tableFooter";
+import CustomTableFooters from "../../ui/tableFooter/prev";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -58,7 +59,11 @@ const CareersTable = ({
   selectionModel,
   block,
   unblock,
-  deletes
+  deletes,
+  next,
+  prev,
+  pagiE,
+  pagiS,
 }) => {
   const [pageSize, setPageSize] = useState(5);
   const classes = useStyles();
@@ -243,13 +248,25 @@ const CareersTable = ({
           selectionModel={selectionModel}
         />
       </div>
-
-      <CustomTableFooter
-        disabled={!disableBtn || indexes?.length === 0}
+      <div>Page {pagiS} of {pagiE} from backend</div>
+      <div style={{position:"relative",display:"flex",justifyContent:"space-between",}}>
+        <CustomTableFooters
+          // disabled={indexes.length === 0}
+          style={{backgroundColor:"#ccc"}}
+          name={"Load Previous"}
+          clicked={() => {
+            prev();
+          }}
+        />      
+        <CustomTableFooters
+          style={{backgroundColor:"#000"}}
+        // disabled={indexes.length === 0}
+        name={"Load More"}
         clicked={() => {
-          setShowModal(true);
+          next();
         }}
       />
+        </div>
 
       <CustomModal open={showModal} close={closeModal} size="small">
         <div className="delete-dialog">

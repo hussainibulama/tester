@@ -54,8 +54,9 @@ const TransactionsTable = ({
   setSelectionModel,
   selectionModel,
   next,
-  prev
-  
+  prev,
+  pagiE,
+  pagiS,
    }) => {
 
     const [pageSize, setPageSize] = useState(5);
@@ -234,6 +235,7 @@ const TransactionsTable = ({
               selectionModel={selectionModel}
           />
         </div>
+        <div>Page {pagiS} of {pagiE} from backend</div>
         <div style={{position:"relative",display:"flex",justifyContent:"space-between",}}>
         <CustomTableFooters
           // disabled={indexes.length === 0}

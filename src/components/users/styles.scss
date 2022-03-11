@@ -1,4 +1,31 @@
 .section {
+  &_inputer {
+    position: relative;
+    display: flex;
+    flex-direction: space-between;
+    align-items: center;
+    width:100%;
+    margin-bottom: 1em;
+    input{
+      position: relative;
+      height:30px;
+      width:200px;
+      padding: 1em;
+      margin-right:1em;
+    }
+    button{
+      background-color: #000;
+  border: none;
+  color: white;
+  padding: 6px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+    }
+  }
   &_header {
     display: flex;
     margin-bottom: 48px;

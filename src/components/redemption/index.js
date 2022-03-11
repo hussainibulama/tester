@@ -1,23 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import "./styles.scss";
 import TransactionsTable from "./table";
-import * as actions from "../../store/actions";
-import { useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "../../utils/axios";
 import moment from "moment";
 import instance from "../../utils/axios";
 
 const Redemption = () => {
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [indexes, setIndexes] = useState([]);
   const [selectionModel,setSelectionModel] = useState([]);
   const [discounts, setDiscounts] = useState([]);
   const [counts, setCounts] = useState(1);
-
+  const [pagiS, setpagiS] = useState(0);
+  const [pagiE, setpagiE] = useState(0);
   const { currentInsights } = useSelector((state) => {
     return {
       currentInsights: state.insights.currentInsights,
@@ -59,6 +57,21 @@ const Redemption = () => {
       const res = await instance.get(`/auth/v2/admin/redemption-logs?limit=100&page=${tip?tip==="plus"?counts+1:tip==="minus"&&counts>1?counts-1:counts:counts}&platform=web`);
       let result = await res.data;
       setDiscounts(result.data.users);
+      setpagiE(result.data.pagination.pageCount);
+      setpagiS(result.data.pagination.currentPage);
+    } catch (err) {
+      console.log(err);
+    
+    } 
+  }
+  async function fetsr(tip) {
+    try {
+      const res = await instance.get(`/auth/v2/admin/redemption/get-amount?platform=web`,{
+        "start_date":"2022/02/03",
+        "end_date":"2022/02/04"
+    });
+      let result = await res.data;
+      
     } catch (err) {
       console.log(err);
     
@@ -117,6 +130,7 @@ const Redemption = () => {
 
   useEffect(() => {
     fetchTransactions();
+    fetsr();
   }, []);
   return (
     <div>
@@ -130,6 +144,7 @@ const Redemption = () => {
             Add New
           </NavLink> */}
         </div>
+    
         <div className="section_body">
           <TransactionsTable 
             rows={rows}
@@ -143,7 +158,8 @@ const Redemption = () => {
             selectionModel={selectionModel}
             prev={prev}
             next={next}
-           
+            pagiE={pagiE}
+            pagiS={pagiS}
           />
         </div>
       </div>

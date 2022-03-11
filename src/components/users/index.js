@@ -21,6 +21,11 @@ const Users = () => {
   const dispatch = useDispatch();
   const [selectionModel,setSelectionModel] = useState([]);
   const [users, setUsers] = useState([]);
+  const [counts, setCounts] = useState(1);
+  const [starts, setStarts] = useState("");
+  const [ends, setEnds] = useState("");
+  const [pagiS, setpagiS] = useState(0);
+  const [pagiE, setpagiE] = useState(0);
 
   const { roles, permissions } = useSelector((state) => {
     return {
@@ -33,6 +38,17 @@ const Users = () => {
     setIndexes([]);
   };
 
+  async function prev(){
+    setCounts(counts-1);
+    if(counts>1){
+      fetchUsers("minus");
+    }
+
+  }
+  async function next(){
+    setCounts(counts+1);
+    fetchUsers("plus");
+  }
   async function fetchPermissions() {
     try {
       const response = await axios.get("/roles/get-permissions/list");
@@ -151,16 +167,34 @@ const Users = () => {
       fetchUsers();
     }
   }
-  async function fetchUsers() {
+  async function fetchUsers(tip) {
     try {
-      const res = await instance.get("/auth/v2/admin/users?limit=100&page=1&platform=web");
+      const res = await instance.get(`/auth/v2/admin/users?limit=100&page=${tip?tip==="plus"?counts+1:tip==="minus"&&counts>1?counts-1:counts:counts}&platform=web`);
       let result = await res.data;
       setUsers(result.data.users);
+      setpagiE(result.data.pagination.pageCount);
+      setpagiS(result.data.pagination.currentPage);
     } catch (err) {
       console.log(err);
     
     } 
   }
+async function SearchDate(e){
+  e.preventDefault();
+  const f = starts.split("-");
+  const s = ends.split("-");
+  try {
+    const res = await instance.get(`/auth/v2/admin/sort-users?start_date=${f[2]+"-"+f[1]+"-"+f[0]}&end_date=${s[2]+"-"+s[1]+"-"+s[0]}&platform=web`,{
+      "start_date":f[2]+"-"+f[1]+"-"+f[0],
+      "end_date":s[2]+"-"+s[1]+"-"+s[0],
+    });
+    let result = await res.data;
+    setUsers(result.data.users);
+  } catch (err) {
+    console.log(err);
+  
+  } 
+}
   useEffect(() => {
     fetchUsers();
     fetchPermissions();
@@ -178,7 +212,21 @@ const Users = () => {
           </NavLink>  */}
   
       </div>
-   
+      <div className="section_header" style={{margin:0}}>
+        <h2>Search by date</h2>
+        </div>
+      <div className="section_inputer">
+          <div>
+            <input onChange={(e)=>setStarts(e.target.value)} type="date"/>
+          </div>
+          <div>
+            <input onChange={(e)=>setEnds(e.target.value)} type="date"/>
+          </div>
+
+          <div>
+            <button onClick={(e)=>SearchDate(e)}>Search</button>
+          </div>
+        </div>
 
  
       <div className="section_body">
@@ -200,7 +248,12 @@ const Users = () => {
               id: roleId,
             });
           }}
+          prev={prev}
+          next={next}
+          pagiE={pagiE}
+          pagiS={pagiS}
         />
+      
       </div>
     </div>
   );

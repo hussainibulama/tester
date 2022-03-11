@@ -17,7 +17,8 @@ const Transactions = () => {
   const [selectionModel,setSelectionModel] = useState([]);
   const [discounts, setDiscounts] = useState([]);
   const [counts, setCounts] = useState(1);
-
+  const [pagiS, setpagiS] = useState(0);
+  const [pagiE, setpagiE] = useState(0);
   const { currentInsights } = useSelector((state) => {
     return {
       currentInsights: state.insights.currentInsights,
@@ -62,6 +63,8 @@ const Transactions = () => {
       const res = await instance.get(`auth/v2/admin/transactions?limit=100&page=${tip?tip==="plus"?counts+1:tip==="minus"&&counts>1?counts-1:counts:counts}&platform=web`);
       let result = await res.data;
       setDiscounts(result.data.transactions);
+      setpagiE(result.data.pagination.pageCount);
+      setpagiS(result.data.pagination.currentPage);
     } catch (err) {
       console.log(err);
     
@@ -146,7 +149,8 @@ const Transactions = () => {
             selectionModel={selectionModel}
             prev={prev}
             next={next}
-           
+            pagiE={pagiE}
+            pagiS={pagiS}
           />
         </div>
       </div>
