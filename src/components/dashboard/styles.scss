@@ -74,7 +74,19 @@
       }
     }
   }
-
+  div.asp{
+    margin-bottom: 10px;
+  }
+  input.asp{
+    position: relative;
+    width:120px;
+    height:30px;
+    margin-right:5px;
+  }
+  button.asp{
+    position: relative;
+    height:30px;
+  }
   &__card1 {
     display: flex;
     justify-content: space-between;

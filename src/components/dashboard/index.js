@@ -261,6 +261,8 @@ const DashboardPage = () => {
     const [Tusers, setTusers] = useState(0);
     const [block, setBlock] = useState(0);
     const [refer, setRefer] = useState(0);
+    const [sd, setSd]=useState("");
+    const [ed, setEd]=useState("");
     const [RedemptionLog, setRedemptionLog] = useState([]);
     const [totalad, settotalad] = useState({
       "totalAdverts":0,
@@ -294,6 +296,15 @@ const DashboardPage = () => {
     }
     async function totalcounts(){
       const res = await instance.get(`/advert/v2/admin/get-total-counts?platform=web`);
+      let result = await res.data.data;
+      settotalcount(result);
+      
+      
+    }
+    async function DateValue(){
+      let a = sd.split("-");
+      let b = ed.split("-");
+      const res = await instance.get(`/advert/v2/admin/ads-statistics?platform=web&start_date=${a[2]+`/`+a[1]+'/'+a[0]}&end_date=${b[2]+`/`+b[1]+'/'+b[0]}`);
       let result = await res.data.data;
       settotalcount(result);
       
@@ -342,7 +353,7 @@ const DashboardPage = () => {
       unverifiedu();
       blocked();
       referrals();
-      amountall();
+      //amountall();
     },[]);
     const handleCardButtonClick = (event) => {
         setAnchorCardEl(event.currentTarget);
@@ -366,6 +377,11 @@ const DashboardPage = () => {
                         <p>Admoni Admin dashboard.
                         </p>
                     </div>
+                </div>
+                <div className="asp">
+                  <input className="asp" type="date" onChange={(e)=>setSd(e.target.value)} />
+                  <input  className="asp" type="date" onChange={(e)=>setEd(e.target.value)} />
+                  <button  className="asp" onClick={()=>DateValue()}>Search</button>
                 </div>
                 <div className="column1__overviewer">
                     <div className="straight">
