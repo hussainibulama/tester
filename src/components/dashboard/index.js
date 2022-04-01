@@ -263,6 +263,7 @@ const DashboardPage = () => {
     const [refer, setRefer] = useState(0);
     const [sd, setSd]=useState("");
     const [ed, setEd]=useState("");
+    const [newusers, setNewusers]=useState(0);
     const [RedemptionLog, setRedemptionLog] = useState([]);
     const [totalad, settotalad] = useState({
       "totalAdverts":0,
@@ -302,11 +303,13 @@ const DashboardPage = () => {
       
     }
     async function DateValue(){
+      amountall();
       let a = sd.split("-");
       let b = ed.split("-");
       const res = await instance.get(`/advert/v2/admin/ads-statistics?platform=web&start_date=${a[2]+`/`+a[1]+'/'+a[0]}&end_date=${b[2]+`/`+b[1]+'/'+b[0]}`);
       let result = await res.data.data;
       settotalcount(result);
+
       
     }
     async function verifiedu(){
@@ -336,12 +339,23 @@ const DashboardPage = () => {
       
     }
     async function amountall(){
-      const res = await instance.get(`/auth/v2/admin/user/sort-by-date?platform=web`,{
-        "start_date":"09-02-2000",
-        "end_date":"10-02-2022",
-      });
-      let result = await res.data;
-      console.log(result);
+      if(sd === ""){
+        let d = new Date();
+        let day=d.getDate()<10?+"0"+d.getDate():d.getDate();
+        let month =d.getMonth()<10?+"0"+d.getMonth():d.getMonth();
+        let year=d.getFullYear();
+        console.log("ass "+ day+ month+ year);
+        const res = await instance.get(`/auth/v2/admin/sort-users?platform=web&start_date=${year+`/`+month+'/'+day}&end_date=${year+`/`+month+'/'+day}`);
+        let result = await res.data;
+        setNewusers(result?.data?.Pagination?.totalCount);
+      }else {
+        let a = sd.split("-");
+        let b = ed.split("-");
+        const res = await instance.get(`/auth/v2/admin/sort-users?platform=web&start_date=${a[0]+`/`+a[1]+'/'+a[2]}&end_date=${b[0]+`/`+b[1]+'/'+b[2]}`);
+        let result = await res.data;
+        setNewusers(result?.data?.Pagination?.totalCount);
+      }
+  
       
     }
     useEffect(() => {
@@ -353,7 +367,7 @@ const DashboardPage = () => {
       unverifiedu();
       blocked();
       referrals();
-      //amountall();
+      amountall();
     },[]);
     const handleCardButtonClick = (event) => {
         setAnchorCardEl(event.currentTarget);
@@ -421,8 +435,8 @@ const DashboardPage = () => {
                   <img src={Star} alt="" />
                 </div>{' '}
                 <div className="tags">
-                  <p>16455</p>
-                  <p>App Review</p>
+                  <p>{newusers}</p>
+                  <p>New Users</p>
                 </div>
               </div>
               <div className="sub-views">
