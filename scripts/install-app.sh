@@ -3,4 +3,4 @@
 #rm -rf node_modules public script src  build
 
 cd /var/www/admin-frontend
-npm run build
+npm install
