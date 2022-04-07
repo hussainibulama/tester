@@ -7,17 +7,7 @@
     width: 100%;
   }
 }
-.selecter{
-  position: relative;
-  width:200px;
-  height:35px;
-}
-.inputer{
-  position: relative;
-  width:200px;
-  height:35px;
-  padding: 1em;
-}
+
 .title {
   margin-bottom: 24px;
 }

@@ -9,7 +9,6 @@ import { useParams } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import instance from "../../../../utils/axios";
 import moment from "moment";
-import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
   root: {
@@ -54,9 +53,6 @@ Setter,
   const [call, setcall] = useState('');
   const [calltype, setcalltype] = useState('');
   const [thumbnail, setThumbnail] = useState('');
-  const [inputer, setInputer] = useState('');
-  const [inputerB, setInputerB] = useState(false);
-  
   const [allData, setAllData] = useState({"name":"","description":"","age":"","age_status":"","approval_status":"","approved_at":"","business_name":"","daily_budget":"","daily_spend":"","destination_link":"","end_date":"","gender":{"option":""},"gender_status":"","impression_cost":"","impression_limit":"","impression_time":"","location":{},"location_status":"","paid":"","total_budget":"",});
 
   async function fetchdata() {
@@ -97,41 +93,6 @@ Setter,
   useEffect(() => {
     fetchdata();
   }, []);
-  const update=async(e)=>{
-    e.preventDefault();
-    let ar = [];
-    if(inputer.includes(",")){
-      let a = inputer.split(",");
-        for(let i =0; i<a.length;i++){
-          ar.push(a[i]);
-        }
-    } else {
-      ar.push(inputer);
-    }
-    try {
-      let res = await instance.put(
-        'advert/v2/admin/update-group/' + params.id + '?platform=web',{
-          group:inputerB,
-          groupids:{
-            ids:ar,
-          },
-        },
-      );
-
-      let result = await res.data;
-      if (result && result.status === 'success') {
-        toast.success("Group Updated");
-
-      }else if (result && result.status === 'error') {
-        toast.error(result.message);
-
-      }
-    } catch (e) {
-      console.log(e);
-      toast.error(e.message);
-
-    }
-  }
   return (
     <div>
       <form>
@@ -217,21 +178,6 @@ Setter,
             <div className={styles.inline_text}>
             <h4>Location Options:</h4><p>{allData?JSON.stringify(allData.location):""}</p>
             </div>
-            <div className={styles.inline_text}>
-            <h4>Group:</h4><p><select onChange={e=>setInputerB(e.target.value)} className={styles.selecter}>
-                <option>{allData?.group===null?'false':allData?.group===true?'true':'false'}</option>
-                <option>true</option>
-                <option>false</option>
-              </select></p>
-            </div>
-            <div className={styles.inline_text}>
-            <h4>Group Names:</h4><p> <input value={inputer?inputer:allData?.groupids?.ids.toString()} onChange={e=>setInputer(e.target.value)} className={styles.inputer} type="text" placeholder="group name"/></p>
-            </div>
-            <div className={styles.inline_text}>
-            <h4><button onClick={(e)=>update(e)}>Update Group</button></h4><p></p>
-            </div>
-            
-             
             <div className={classes.myEditingArea}>
               {/* <CkEditor
                 data={description}
@@ -294,9 +240,6 @@ Setter,
                 src={'' + thumbnail}
                 alt="images"
               />
-            </div>
-              <div className={styles.slug}>
-              
             </div>
             </div>
            

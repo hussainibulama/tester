@@ -18,12 +18,14 @@ import { PagesPage } from "./pages/pages";
 import { ServicesPage } from "./pages/services";
 import { ProfilePage } from "./pages/profile";
 import { CaseStudyPage } from "./pages/case_studies";
+import { AdsGroup } from "./pages/ads_group";
 import { PartnersPage } from "./pages/partners";
 import { ClientsPage } from "./pages/clients";
 import { CreateClientsPage } from "./pages/clients/createClients";
 import { CreatePartnersPage } from "./pages/partners/createPartners";
 import { CareersPage } from "./pages/careers";
 import { Transactions } from "./pages/transactions";
+import { AdsUserGroup } from "./pages/ads_user_group";
 import { Redemption } from "./pages/redemption";
 import { Faq } from "./pages/faq";
 import { CreateFaq } from "./pages/faq/faq";
@@ -96,6 +98,12 @@ function App() {
           component={Transactions}
           layout={DashboardLayout}
         />
+         <AppRoute
+          path="/AdsUserGroup/:id"
+          exact
+          component={AdsUserGroup}
+          layout={DashboardLayout}
+        />
              <AppRoute
           path="/Faq"
           exact
@@ -143,6 +151,12 @@ function App() {
           path="/CaseStudy"
           exact
           component={CaseStudyPage}
+          layout={DashboardLayout}
+        />
+          <AppRoute
+          path="/AdsGroup"
+          exact
+          component={AdsGroup}
           layout={DashboardLayout}
         />
         <AppRoute

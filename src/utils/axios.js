@@ -2,6 +2,7 @@ import axios from "axios";
 import https from "https";
 const instance = axios.create({
   baseURL: "https://tapi.admoni.net/",
+  //baseURL: "http://localhost:3007/",
   mode: "cors",
   headers: {
     "Content-Type": "application/json",

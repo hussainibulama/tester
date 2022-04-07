@@ -65,6 +65,12 @@ const Nav = () => {
             <span>Adverts</span>
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/AdsGroup">
+            <CaseStudies />
+            <span>Advert Groups</span>
+          </NavLink>
+        </li>
 
         <li>
           <NavLink to="/Transactions">
